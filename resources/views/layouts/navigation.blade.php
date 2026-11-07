@@ -10,6 +10,7 @@
         ['route' => 'reportes.ventas', 'match' => 'reportes.*', 'label' => 'Reportes', 'icon' => 'reportes', 'can' => ['reportes.ver']],
         ['route' => 'comprobantes.index', 'match' => 'comprobantes.*', 'label' => 'Boletas', 'icon' => 'boletas', 'can' => ['viewAny', \App\Models\Comprobante::class]],
         ['route' => 'auditoria.index', 'match' => 'auditoria.*', 'label' => 'Auditoría', 'icon' => 'auditoria', 'can' => ['auditoria.ver']],
+        ['route' => 'respaldo.index', 'match' => 'respaldo.*', 'label' => 'Respaldo', 'icon' => 'respaldo', 'can' => ['respaldo.exportar']],
     ];
 @endphp
 

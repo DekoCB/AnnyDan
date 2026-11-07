@@ -10,6 +10,7 @@ use App\Http\Controllers\MovimientoCajaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ReporteVentaController;
+use App\Http\Controllers\RespaldoController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/auditoria', [AuditoriaController::class, 'index'])->name('auditoria.index');
     Route::get('/auditoria/{auditoria}', [AuditoriaController::class, 'show'])->name('auditoria.show');
+
+    Route::get('/respaldo', [RespaldoController::class, 'index'])->name('respaldo.index');
+    Route::get('/respaldo/exportar', [RespaldoController::class, 'exportar'])->name('respaldo.exportar');
 });
 
 require __DIR__.'/auth.php';
