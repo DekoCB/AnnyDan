@@ -12,7 +12,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-[#1B1B24] dark:text-[#F2F1F7] leading-tight">
                 Cuenta por cobrar — {{ $cuenta->cliente->nombre_razon_social }}
             </h2>
             @can('anular', $cuenta)
@@ -45,38 +45,38 @@
             @endif
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Total</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Total</p>
                     <p class="mt-1 font-semibold text-gray-900 dark:text-gray-100">S/ {{ number_format((float) $cuenta->monto_total, 2) }}</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Pagado</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Pagado</p>
                     <p class="mt-1 font-semibold text-gray-900 dark:text-gray-100">S/ {{ number_format((float) $cuenta->monto_pagado, 2) }}</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Saldo</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Saldo</p>
                     <p class="mt-1 font-semibold text-gray-900 dark:text-gray-100">S/ {{ number_format((float) $cuenta->saldo, 2) }}</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Estado</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Estado</p>
                     <span class="inline-flex mt-1 px-2 py-1 text-xs font-semibold rounded-full {{ $colores[$estadoMostrado] ?? '' }}">
                         {{ ucfirst($estadoMostrado) }}
                     </span>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 text-sm flex flex-wrap gap-x-8 gap-y-1">
-                <p><span class="text-gray-500 dark:text-gray-400">Emisión:</span> {{ $cuenta->fecha_emision->format('d/m/Y') }}</p>
-                <p><span class="text-gray-500 dark:text-gray-400">Vencimiento:</span> {{ $cuenta->fecha_vencimiento->format('d/m/Y') }}</p>
+            <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4 text-sm flex flex-wrap gap-x-8 gap-y-1">
+                <p><span class="text-paper-muted dark:text-ink-muted">Emisión:</span> {{ $cuenta->fecha_emision->format('d/m/Y') }}</p>
+                <p><span class="text-paper-muted dark:text-ink-muted">Vencimiento:</span> {{ $cuenta->fecha_vencimiento->format('d/m/Y') }}</p>
                 @if ($cuenta->venta)
-                    <p><span class="text-gray-500 dark:text-gray-400">Venta asociada:</span> <a href="{{ route('ventas.show', $cuenta->venta) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $cuenta->venta->numero_operacion }}</a></p>
+                    <p><span class="text-paper-muted dark:text-ink-muted">Venta asociada:</span> <a href="{{ route('ventas.show', $cuenta->venta) }}" class="text-brand-violet dark:text-violet-300 hover:underline">{{ $cuenta->venta->numero_operacion }}</a></p>
                 @endif
             </div>
 
             @can('pagar', $cuenta)
                 @if (in_array($cuenta->estado, ['pendiente', 'parcial']))
-                    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
-                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase mb-3">Registrar pago</h3>
+                    <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-6">
+                        <h3 class="text-sm font-semibold text-paper-muted dark:text-ink-muted uppercase mb-3">Registrar pago</h3>
                         <form method="POST" action="{{ route('cuentas-cobrar.pagar', $cuenta) }}" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
                             @csrf
                             <div>
@@ -92,7 +92,7 @@
                             <div>
                                 <x-input-label for="medio_pago" value="Medio de pago" />
                                 <select id="medio_pago" name="medio_pago" required
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm">
+                                    class="mt-1 block w-full border-paper-line dark:border-ink-line dark:bg-white/5 dark:text-[#F2F1F7] rounded-md shadow-sm">
                                     @foreach (['efectivo' => 'Efectivo', 'tarjeta' => 'Tarjeta', 'transferencia' => 'Transferencia', 'yape_plin' => 'Yape / Plin', 'otro' => 'Otro'] as $valor => $etiqueta)
                                         <option value="{{ $valor }}">{{ $etiqueta }}</option>
                                     @endforeach
@@ -111,17 +111,17 @@
                 @endif
             @endcan
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
-                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase mb-3">Historial de pagos</h3>
+            <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-6">
+                <h3 class="text-sm font-semibold text-paper-muted dark:text-ink-muted uppercase mb-3">Historial de pagos</h3>
                 @forelse ($cuenta->pagos as $pago)
-                    <div class="py-2 border-b border-gray-100 dark:border-gray-700 last:border-0 text-sm flex flex-wrap justify-between gap-2">
-                        <span class="text-gray-600 dark:text-gray-400">
+                    <div class="py-2 border-b border-paper-line dark:border-ink-line last:border-0 text-sm flex flex-wrap justify-between gap-2">
+                        <span class="text-paper-muted dark:text-ink-muted">
                             {{ $pago->fecha_pago->format('d/m/Y') }} · {{ ucfirst(str_replace('_', ' / ', $pago->medio_pago)) }}
                         </span>
                         <span class="font-medium text-gray-900 dark:text-gray-100">S/ {{ number_format((float) $pago->monto, 2) }}</span>
                     </div>
                 @empty
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Todavía no se han registrado pagos.</p>
+                    <p class="text-sm text-paper-muted dark:text-ink-muted">Todavía no se han registrado pagos.</p>
                 @endforelse
             </div>
         </div>

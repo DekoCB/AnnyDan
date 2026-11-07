@@ -5,12 +5,12 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-[#1B1B24] dark:text-[#F2F1F7] leading-tight">
                 Flujo de caja
             </h2>
             @can('create', \App\Models\MovimientoCaja::class)
                 <a href="{{ route('caja.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white">
+                    class="inline-flex items-center px-4 py-2.5 bg-brand-gradient border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest shadow-sm shadow-brand-violet/30 hover:opacity-90 transition">
                     Registrar movimiento
                 </a>
             @endcan
@@ -27,17 +27,17 @@
 
             <div class="flex flex-wrap gap-2 text-sm">
                 <a href="{{ route('caja.index', ['desde' => $hoy->toDateString(), 'hasta' => $hoy->toDateString()]) }}"
-                    class="px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Hoy</a>
+                    class="px-3 py-1.5 rounded-md border border-paper-line dark:border-ink-line hover:bg-paper dark:hover:bg-white/5">Hoy</a>
                 <a href="{{ route('caja.index', ['desde' => $hoy->copy()->startOfWeek()->toDateString(), 'hasta' => $hoy->copy()->endOfWeek()->toDateString()]) }}"
-                    class="px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Esta semana</a>
+                    class="px-3 py-1.5 rounded-md border border-paper-line dark:border-ink-line hover:bg-paper dark:hover:bg-white/5">Esta semana</a>
                 <a href="{{ route('caja.index', ['desde' => $hoy->copy()->startOfMonth()->toDateString(), 'hasta' => $hoy->copy()->endOfMonth()->toDateString()]) }}"
-                    class="px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Este mes</a>
+                    class="px-3 py-1.5 rounded-md border border-paper-line dark:border-ink-line hover:bg-paper dark:hover:bg-white/5">Este mes</a>
                 <a href="{{ route('caja.index', ['desde' => $hoy->copy()->startOfYear()->toDateString(), 'hasta' => $hoy->copy()->endOfYear()->toDateString()]) }}"
-                    class="px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Este año</a>
+                    class="px-3 py-1.5 rounded-md border border-paper-line dark:border-ink-line hover:bg-paper dark:hover:bg-white/5">Este año</a>
             </div>
 
             <form method="GET" action="{{ route('caja.index') }}"
-                class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 flex flex-wrap gap-4 items-end">
+                class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4 flex flex-wrap gap-4 items-end">
                 <div>
                     <x-input-label for="desde" value="Desde" />
                     <x-text-input id="desde" name="desde" type="date" class="mt-1 block w-full" value="{{ $desde->toDateString() }}" />
@@ -49,7 +49,7 @@
                 <div>
                     <x-input-label for="tipo" value="Tipo" />
                     <select id="tipo" name="tipo"
-                        class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm">
+                        class="mt-1 block border-paper-line dark:border-ink-line dark:bg-white/5 dark:text-[#F2F1F7] rounded-md shadow-sm">
                         <option value="">Todos</option>
                         <option value="ingreso" @selected(request('tipo') === 'ingreso')>Ingreso</option>
                         <option value="egreso" @selected(request('tipo') === 'egreso')>Egreso</option>
@@ -58,7 +58,7 @@
                 <div>
                     <x-input-label for="categoria_id" value="Categoría" />
                     <select id="categoria_id" name="categoria_id"
-                        class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm">
+                        class="mt-1 block border-paper-line dark:border-ink-line dark:bg-white/5 dark:text-[#F2F1F7] rounded-md shadow-sm">
                         <option value="">Todas</option>
                         @foreach ($categorias as $categoria)
                             <option value="{{ $categoria->id }}" @selected(request('categoria_id') == $categoria->id)>{{ $categoria->nombre }}</option>
@@ -69,39 +69,39 @@
             </form>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Ingresos</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Ingresos</p>
                     <p class="mt-1 text-2xl font-semibold text-green-600 dark:text-green-400">S/ {{ number_format((float) $totalIngresos, 2) }}</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Egresos</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Egresos</p>
                     <p class="mt-1 text-2xl font-semibold text-red-600 dark:text-red-400">S/ {{ number_format((float) $totalEgresos, 2) }}</p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-                    <p class="text-xs uppercase text-gray-500 dark:text-gray-400">Resultado del periodo</p>
+                <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4">
+                    <p class="text-xs uppercase text-paper-muted dark:text-ink-muted">Resultado del periodo</p>
                     <p class="mt-1 text-2xl font-semibold {{ $utilidad >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
                         S/ {{ number_format((float) $utilidad, 2) }}
                     </p>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-900">
+            <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-paper-line dark:divide-ink-line">
+                    <thead class="bg-paper dark:bg-white/5">
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Fecha</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Categoría</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Descripción</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Tipo</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Monto</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Fecha</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Categoría</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Descripción</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Tipo</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Monto</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-paper-line dark:divide-ink-line">
                         @forelse ($movimientos as $movimiento)
                             <tr>
-                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{{ $movimiento->fecha->format('d/m/Y') }}</td>
+                                <td class="px-4 py-3 text-sm text-paper-muted dark:text-ink-muted">{{ $movimiento->fecha->format('d/m/Y') }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ $movimiento->categoria->nombre }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{{ $movimiento->descripcion ?? '—' }}</td>
+                                <td class="px-4 py-3 text-sm text-paper-muted dark:text-ink-muted">{{ $movimiento->descripcion ?? '—' }}</td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($movimiento->tipo === 'ingreso')
                                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200">Ingreso</span>
@@ -115,7 +115,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                                <td colspan="5" class="px-4 py-8 text-center text-sm text-paper-muted dark:text-ink-muted">
                                     No se encontraron movimientos en el periodo seleccionado.
                                 </td>
                             </tr>

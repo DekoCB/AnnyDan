@@ -28,7 +28,9 @@ use Tests\TestCase;
  *
  * Los límites están fijados con margen por encima de los conteos reales
  * medidos manualmente contra ~400 ventas / ~2000 auditorías (ver informe
- * final, sección de rendimiento) — no son un número arbitrario.
+ * final, sección de rendimiento) — no son un número arbitrario. Incluyen
+ * las 2 consultas fijas del TopbarComposer (alerta de cuentas vencidas),
+ * presente en cada página autenticada.
  */
 class PerformanceTest extends TestCase
 {
@@ -75,28 +77,28 @@ class PerformanceTest extends TestCase
     {
         CuentaPorCobrar::factory()->count(30)->create();
 
-        $this->assertLessThan(10, $this->contarQueries(route('cuentas-cobrar.index')));
+        $this->assertLessThan(12, $this->contarQueries(route('cuentas-cobrar.index')));
     }
 
     public function test_cuentas_por_pagar_index_query_count_does_not_scale_with_row_count(): void
     {
         CuentaPorPagar::factory()->count(30)->create();
 
-        $this->assertLessThan(10, $this->contarQueries(route('cuentas-pagar.index')));
+        $this->assertLessThan(12, $this->contarQueries(route('cuentas-pagar.index')));
     }
 
     public function test_caja_index_query_count_does_not_scale_with_row_count(): void
     {
         MovimientoCaja::factory()->count(30)->create(['fecha' => now()]);
 
-        $this->assertLessThan(12, $this->contarQueries(route('caja.index')));
+        $this->assertLessThan(14, $this->contarQueries(route('caja.index')));
     }
 
     public function test_comprobantes_index_query_count_does_not_scale_with_row_count(): void
     {
         Comprobante::factory()->count(30)->create();
 
-        $this->assertLessThan(10, $this->contarQueries(route('comprobantes.index')));
+        $this->assertLessThan(12, $this->contarQueries(route('comprobantes.index')));
     }
 
     public function test_auditoria_index_query_count_does_not_scale_with_row_count(): void
@@ -110,7 +112,7 @@ class PerformanceTest extends TestCase
         DB::enableQueryLog();
         $this->actingAs($contabilidad)->get(route('auditoria.index'))->assertOk();
 
-        $this->assertLessThan(10, count(DB::getQueryLog()));
+        $this->assertLessThan(12, count(DB::getQueryLog()));
     }
 
     public function test_dashboard_query_count_stays_bounded_regardless_of_data_volume(): void

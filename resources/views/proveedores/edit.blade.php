@@ -1,20 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-[#1B1B24] dark:text-[#F2F1F7] leading-tight">
             Editar proveedor
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white dark:bg-ink-surface overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <form id="proveedor-form" method="POST" action="{{ route('proveedores.update', $proveedor) }}" novalidate>
                     @csrf
                     @method('PUT')
                     @include('proveedores._form')
 
                     <div class="flex items-center justify-end gap-4 mt-6">
-                        <a href="{{ route('proveedores.show', $proveedor) }}" class="text-sm text-gray-600 dark:text-gray-400 underline">
+                        <a href="{{ route('proveedores.show', $proveedor) }}" class="text-sm text-paper-muted dark:text-ink-muted underline">
                             Cancelar
                         </a>
                         <x-primary-button>Guardar cambios</x-primary-button>

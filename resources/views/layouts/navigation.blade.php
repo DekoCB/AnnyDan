@@ -1,190 +1,73 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+@php
+    $navItems = [
+        ['route' => 'dashboard', 'match' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'dashboard', 'can' => null],
+        ['route' => 'clientes.index', 'match' => 'clientes.*', 'label' => 'Clientes', 'icon' => 'clientes', 'can' => ['viewAny', \App\Models\Cliente::class]],
+        ['route' => 'proveedores.index', 'match' => 'proveedores.*', 'label' => 'Proveedores', 'icon' => 'proveedores', 'can' => ['viewAny', \App\Models\Proveedor::class]],
+        ['route' => 'ventas.index', 'match' => 'ventas.*', 'label' => 'Ventas', 'icon' => 'ventas', 'can' => ['viewAny', \App\Models\Venta::class]],
+        ['route' => 'cuentas-cobrar.index', 'match' => 'cuentas-cobrar.*', 'label' => 'Cuentas por cobrar', 'icon' => 'cobrar', 'can' => ['viewAny', \App\Models\CuentaPorCobrar::class]],
+        ['route' => 'cuentas-pagar.index', 'match' => 'cuentas-pagar.*', 'label' => 'Cuentas por pagar', 'icon' => 'pagar', 'can' => ['viewAny', \App\Models\CuentaPorPagar::class]],
+        ['route' => 'caja.index', 'match' => 'caja.*', 'label' => 'Caja', 'icon' => 'caja', 'can' => ['viewAny', \App\Models\MovimientoCaja::class]],
+        ['route' => 'reportes.ventas', 'match' => 'reportes.*', 'label' => 'Reportes', 'icon' => 'reportes', 'can' => ['reportes.ver']],
+        ['route' => 'comprobantes.index', 'match' => 'comprobantes.*', 'label' => 'Boletas', 'icon' => 'boletas', 'can' => ['viewAny', \App\Models\Comprobante::class]],
+        ['route' => 'auditoria.index', 'match' => 'auditoria.*', 'label' => 'Auditoría', 'icon' => 'auditoria', 'can' => ['auditoria.ver']],
+    ];
+@endphp
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    @can('viewAny', \App\Models\Cliente::class)
-                        <x-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
-                            {{ __('Clientes') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('viewAny', \App\Models\Proveedor::class)
-                        <x-nav-link :href="route('proveedores.index')" :active="request()->routeIs('proveedores.*')">
-                            {{ __('Proveedores') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('viewAny', \App\Models\Venta::class)
-                        <x-nav-link :href="route('ventas.index')" :active="request()->routeIs('ventas.*')">
-                            {{ __('Ventas') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('viewAny', \App\Models\CuentaPorCobrar::class)
-                        <x-nav-link :href="route('cuentas-cobrar.index')" :active="request()->routeIs('cuentas-cobrar.*')">
-                            {{ __('Cuentas por cobrar') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('viewAny', \App\Models\CuentaPorPagar::class)
-                        <x-nav-link :href="route('cuentas-pagar.index')" :active="request()->routeIs('cuentas-pagar.*')">
-                            {{ __('Cuentas por pagar') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('viewAny', \App\Models\MovimientoCaja::class)
-                        <x-nav-link :href="route('caja.index')" :active="request()->routeIs('caja.*')">
-                            {{ __('Caja') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('reportes.ver')
-                        <x-nav-link :href="route('reportes.ventas')" :active="request()->routeIs('reportes.*')">
-                            {{ __('Reportes') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('viewAny', \App\Models\Comprobante::class)
-                        <x-nav-link :href="route('comprobantes.index')" :active="request()->routeIs('comprobantes.*')">
-                            {{ __('Boletas') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('auditoria.ver')
-                        <x-nav-link :href="route('auditoria.index')" :active="request()->routeIs('auditoria.*')">
-                            {{ __('Auditoría') }}
-                        </x-nav-link>
-                    @endcan
-                </div>
-            </div>
+<!-- Overlay móvil -->
+<div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"
+    class="fixed inset-0 z-30 bg-black/40 lg:hidden" x-transition.opacity></div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+<aside
+    class="fixed inset-y-0 left-0 z-40 w-64 shrink-0 flex flex-col bg-white dark:bg-ink-surface border-r border-paper-line dark:border-ink-line transition-[transform,width] duration-200 ease-out lg:translate-x-0 lg:relative lg:duration-300 lg:ease-in-out"
+    :class="[sidebarOpen ? 'translate-x-0' : '-translate-x-full', sidebarCollapsed ? 'lg:w-[76px]' : 'lg:w-64']"
+>
+    <button type="button" @click="toggleSidebarCollapsed()"
+        class="hidden lg:flex absolute -right-3 top-[26px] z-50 w-6 h-6 items-center justify-center rounded-full bg-brand-gradient text-white shadow-md shadow-brand-violet/40 ring-2 ring-paper dark:ring-ink hover:opacity-90 transition-opacity"
+        :aria-label="sidebarCollapsed ? 'Expandir menú' : 'Colapsar menú'" :aria-expanded="(!sidebarCollapsed).toString()">
+        <svg class="w-3.5 h-3.5 transition-transform duration-300 ease-in-out" :class="sidebarCollapsed && 'rotate-180'"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 6l-6 6 6 6" />
+        </svg>
+    </button>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+    <div class="h-16 flex items-center gap-2.5 px-6 shrink-0 overflow-hidden" :class="sidebarCollapsed && 'lg:px-[26px]'">
+        <span class="w-8 h-8 rounded-lg bg-brand-gradient shrink-0"></span>
+        <span class="font-display font-semibold text-[15px] tracking-tight leading-none whitespace-nowrap overflow-hidden max-w-[180px] opacity-100 transition-[max-width,opacity,margin] duration-300 ease-in-out"
+            :class="sidebarCollapsed && 'lg:max-w-0 lg:opacity-0 lg:-ml-2.5'">
+            AnnyDan
+            <span class="block text-[10px] font-sans font-medium tracking-[0.14em] text-paper-muted dark:text-ink-muted mt-0.5">GESTIÓN ADMINISTRATIVA</span>
+        </span>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            @can('viewAny', \App\Models\Cliente::class)
-                <x-responsive-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
-                    {{ __('Clientes') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('viewAny', \App\Models\Proveedor::class)
-                <x-responsive-nav-link :href="route('proveedores.index')" :active="request()->routeIs('proveedores.*')">
-                    {{ __('Proveedores') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('viewAny', \App\Models\Venta::class)
-                <x-responsive-nav-link :href="route('ventas.index')" :active="request()->routeIs('ventas.*')">
-                    {{ __('Ventas') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('viewAny', \App\Models\CuentaPorCobrar::class)
-                <x-responsive-nav-link :href="route('cuentas-cobrar.index')" :active="request()->routeIs('cuentas-cobrar.*')">
-                    {{ __('Cuentas por cobrar') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('viewAny', \App\Models\CuentaPorPagar::class)
-                <x-responsive-nav-link :href="route('cuentas-pagar.index')" :active="request()->routeIs('cuentas-pagar.*')">
-                    {{ __('Cuentas por pagar') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('viewAny', \App\Models\MovimientoCaja::class)
-                <x-responsive-nav-link :href="route('caja.index')" :active="request()->routeIs('caja.*')">
-                    {{ __('Caja') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('reportes.ver')
-                <x-responsive-nav-link :href="route('reportes.ventas')" :active="request()->routeIs('reportes.*')">
-                    {{ __('Reportes') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('viewAny', \App\Models\Comprobante::class)
-                <x-responsive-nav-link :href="route('comprobantes.index')" :active="request()->routeIs('comprobantes.*')">
-                    {{ __('Boletas') }}
-                </x-responsive-nav-link>
-            @endcan
-            @can('auditoria.ver')
-                <x-responsive-nav-link :href="route('auditoria.index')" :active="request()->routeIs('auditoria.*')">
-                    {{ __('Auditoría') }}
-                </x-responsive-nav-link>
-            @endcan
-        </div>
+    <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 space-y-0.5">
+        @foreach ($navItems as $item)
+            @php
+                $isActive = request()->routeIs($item['match']);
+                $show = is_null($item['can']) || app(\Illuminate\Contracts\Auth\Access\Gate::class)->allows(...$item['can']);
+            @endphp
+            @if ($show)
+                <a href="{{ route($item['route']) }}" title="{{ $item['label'] }}"
+                    class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150
+                        {{ $isActive
+                            ? 'bg-brand-gradient text-white shadow-sm shadow-brand-violet/30'
+                            : 'text-paper-muted dark:text-ink-muted hover:bg-paper dark:hover:bg-white/5 hover:text-[#1B1B24] dark:hover:text-[#F2F1F7]' }}">
+                    <x-nav-icon :name="$item['icon']" class="w-5 h-5 shrink-0 {{ $isActive ? 'text-white' : '' }}" />
+                    <span class="truncate overflow-hidden whitespace-nowrap max-w-[160px] opacity-100 transition-[max-width,opacity] duration-200 ease-in-out"
+                        :class="sidebarCollapsed && 'lg:max-w-0 lg:opacity-0'">{{ $item['label'] }}</span>
+                </a>
+            @endif
+        @endforeach
+    </nav>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
+    <div class="p-3 border-t border-paper-line dark:border-ink-line">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" title="Cerrar sesión"
+                class="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-paper-muted dark:text-ink-muted hover:bg-paper dark:hover:bg-white/5 hover:text-[#1B1B24] dark:hover:text-[#F2F1F7] transition-colors duration-150">
+                <x-nav-icon name="logout" class="w-5 h-5 shrink-0" />
+                <span class="truncate overflow-hidden whitespace-nowrap max-w-[160px] opacity-100 transition-[max-width,opacity] duration-200 ease-in-out"
+                    :class="sidebarCollapsed && 'lg:max-w-0 lg:opacity-0'">Cerrar sesión</span>
+            </button>
+        </form>
     </div>
-</nav>
+</aside>

@@ -1,20 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-[#1B1B24] dark:text-[#F2F1F7] leading-tight">
             Nueva cuenta por pagar
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white dark:bg-ink-surface overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <form method="POST" action="{{ route('cuentas-pagar.store') }}" novalidate>
                     @csrf
 
                     <div>
                         <x-input-label for="proveedor_id" value="Proveedor" />
                         <select id="proveedor_id" name="proveedor_id" required
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            class="mt-1 block w-full border-paper-line dark:border-ink-line dark:bg-white/5 dark:text-[#F2F1F7] focus:border-brand-violet focus:ring-brand-violet rounded-md shadow-sm">
                             <option value="" disabled selected>Seleccione un proveedor…</option>
                             @foreach ($proveedores as $proveedor)
                                 <option value="{{ $proveedor->id }}" @selected(old('proveedor_id') == $proveedor->id)>{{ $proveedor->nombre_razon_social }}</option>
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="flex items-center justify-end gap-4 mt-6">
-                        <a href="{{ route('cuentas-pagar.index') }}" class="text-sm text-gray-600 dark:text-gray-400 underline">
+                        <a href="{{ route('cuentas-pagar.index') }}" class="text-sm text-paper-muted dark:text-ink-muted underline">
                             Cancelar
                         </a>
                         <x-primary-button>Registrar cuenta por pagar</x-primary-button>

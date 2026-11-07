@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-[#1B1B24] dark:text-[#F2F1F7] leading-tight">
             Auditoría
         </h2>
     </x-slot>
@@ -8,11 +8,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <form method="GET" action="{{ route('auditoria.index') }}"
-                class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 flex flex-wrap gap-4 items-end">
+                class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4 flex flex-wrap gap-4 items-end">
                 <div>
                     <x-input-label for="usuario_id" value="Usuario" />
                     <select id="usuario_id" name="usuario_id"
-                        class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm">
+                        class="mt-1 block border-paper-line dark:border-ink-line dark:bg-white/5 dark:text-[#F2F1F7] rounded-md shadow-sm">
                         <option value="">Todos</option>
                         @foreach ($usuarios as $usuario)
                             <option value="{{ $usuario->id }}" @selected(request('usuario_id') == $usuario->id)>{{ $usuario->name }}</option>
@@ -35,27 +35,27 @@
                 <x-secondary-button type="submit">Filtrar</x-secondary-button>
             </form>
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-900">
+            <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-paper-line dark:divide-ink-line">
+                    <thead class="bg-paper dark:bg-white/5">
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Fecha / hora</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Usuario</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acción</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Registro afectado</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Fecha / hora</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Usuario</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Acción</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Registro afectado</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-paper-line dark:divide-ink-line">
                         @forelse ($auditorias as $registro)
                             <tr>
-                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{{ $registro->created_at->format('d/m/Y H:i:s') }}</td>
+                                <td class="px-4 py-3 text-sm text-paper-muted dark:text-ink-muted">{{ $registro->created_at->format('d/m/Y H:i:s') }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ $registro->usuario?->name ?? 'Sistema' }}</td>
                                 <td class="px-4 py-3 text-sm">
-                                    <a href="{{ route('auditoria.show', $registro) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline font-mono text-xs">
+                                    <a href="{{ route('auditoria.show', $registro) }}" class="text-brand-violet dark:text-violet-300 hover:underline font-mono text-xs">
                                         {{ $registro->accion }}
                                     </a>
                                 </td>
-                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                                <td class="px-4 py-3 text-sm text-paper-muted dark:text-ink-muted">
                                     {{ $etiquetas[$registro->auditable_type] ?? '—' }}
                                     @if ($registro->auditable_id)
                                         <span class="text-gray-400">#{{ $registro->auditable_id }}</span>
@@ -64,7 +64,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                                <td colspan="4" class="px-4 py-8 text-center text-sm text-paper-muted dark:text-ink-muted">
                                     No se encontraron registros de auditoría.
                                 </td>
                             </tr>

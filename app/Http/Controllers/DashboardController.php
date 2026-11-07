@@ -64,6 +64,11 @@ class DashboardController extends Controller
             $datos['egresosMes'] = (clone $movimientosMes)->where('tipo', 'egreso')->sum('monto');
             $datos['resultadoMes'] = $datos['ingresosMes'] - $datos['egresosMes'];
 
+            $movimientoTotal = $datos['ingresosMes'] + $datos['egresosMes'];
+            $datos['ingresoRatioPct'] = $movimientoTotal > 0
+                ? round(($datos['ingresosMes'] / $movimientoTotal) * 100)
+                : 0;
+
             $datos['pagosClientesRecientes'] = PagoCliente::query()->with('cuentaPorCobrar.cliente')->latest('fecha_pago')->limit(5)->get();
             $datos['pagosProveedoresRecientes'] = PagoProveedor::query()->with('cuentaPorPagar.proveedor')->latest('fecha_pago')->limit(5)->get();
         }

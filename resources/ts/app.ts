@@ -6,6 +6,7 @@ import { initSearchDebounce } from './modules/search-debounce';
 import { initDocumentoValidation } from './modules/documento-validation';
 import { initVentaForm } from './modules/venta-form';
 import { initMovimientoCajaForm } from './modules/movimiento-caja-form';
+import { initThemeToggle } from './modules/theme-toggle';
 
 window.Alpine = Alpine;
 
@@ -17,3 +18,4 @@ initDocumentoValidation('#cliente-form');
 initDocumentoValidation('#proveedor-form');
 initVentaForm();
 initMovimientoCajaForm();
+initThemeToggle();

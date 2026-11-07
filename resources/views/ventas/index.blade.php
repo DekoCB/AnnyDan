@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-[#1B1B24] dark:text-[#F2F1F7] leading-tight">
                 Ventas
             </h2>
             @can('create', \App\Models\Venta::class)
                 <a href="{{ route('ventas.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white">
+                    class="inline-flex items-center px-4 py-2.5 bg-brand-gradient border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest shadow-sm shadow-brand-violet/30 hover:opacity-90 transition">
                     Nueva venta
                 </a>
             @endcan
@@ -27,7 +27,7 @@
             @endif
 
             <form method="GET" action="{{ route('ventas.index') }}" data-debounce-search
-                class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 flex flex-wrap gap-4 items-end">
+                class="bg-white dark:bg-ink-surface shadow-sm rounded-lg p-4 flex flex-wrap gap-4 items-end">
                 <div class="flex-1 min-w-[200px]">
                     <x-input-label for="q" value="Buscar por N° operación o cliente" />
                     <x-text-input id="q" name="q" type="text" class="mt-1 block w-full" value="{{ request('q') }}" />
@@ -43,7 +43,7 @@
                 <div>
                     <x-input-label for="estado" value="Estado" />
                     <select id="estado" name="estado"
-                        class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm">
+                        class="mt-1 block border-paper-line dark:border-ink-line dark:bg-white/5 dark:text-[#F2F1F7] rounded-md shadow-sm">
                         <option value="">Todos</option>
                         <option value="registrada" @selected(request('estado') === 'registrada')>Registrada</option>
                         <option value="anulada" @selected(request('estado') === 'anulada')>Anulada</option>
@@ -52,25 +52,25 @@
                 <x-secondary-button type="submit">Filtrar</x-secondary-button>
             </form>
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-900">
+            <div class="bg-white dark:bg-ink-surface shadow-sm rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-paper-line dark:divide-ink-line">
+                    <thead class="bg-paper dark:bg-white/5">
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">N° operación</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Cliente</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Fecha</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Total</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Estado</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">N° operación</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Cliente</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Fecha</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Total</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-paper-muted dark:text-ink-muted uppercase">Estado</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-paper-line dark:divide-ink-line">
                         @forelse ($ventas as $venta)
                             <tr>
                                 <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
                                     <a href="{{ route('ventas.show', $venta) }}" class="hover:underline">{{ $venta->numero_operacion }}</a>
                                 </td>
-                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{{ $venta->cliente->nombre_razon_social }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{{ $venta->fecha->format('d/m/Y H:i') }}</td>
+                                <td class="px-4 py-3 text-sm text-paper-muted dark:text-ink-muted">{{ $venta->cliente->nombre_razon_social }}</td>
+                                <td class="px-4 py-3 text-sm text-paper-muted dark:text-ink-muted">{{ $venta->fecha->format('d/m/Y H:i') }}</td>
                                 <td class="px-4 py-3 text-sm text-right text-gray-900 dark:text-gray-100">S/ {{ number_format((float) $venta->total, 2) }}</td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($venta->estado === 'registrada')
@@ -82,7 +82,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                                <td colspan="5" class="px-4 py-8 text-center text-sm text-paper-muted dark:text-ink-muted">
                                     No se encontraron ventas.
                                 </td>
                             </tr>
