@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Database\Seeders\CategoriasMovimientoSeeder;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Native\Desktop\Contracts\ProvidesPhpIni;
@@ -37,8 +39,8 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     }
 
     /**
-     * La base SQLite del usuario nace vacía: se siembran roles, categorías y
-     * el administrador inicial solo la primera vez.
+     * La base SQLite del usuario nace vacía: se siembran roles y categorías
+     * solo la primera vez. El administrador lo crea el usuario en /register.
      */
     private function seedOnFirstRun(): void
     {
@@ -47,7 +49,9 @@ class NativeAppServiceProvider implements ProvidesPhpIni
                 return;
             }
 
-            Artisan::call('db:seed', ['--force' => true]);
+            foreach ([RolesAndPermissionsSeeder::class, CategoriasMovimientoSeeder::class] as $seeder) {
+                Artisan::call('db:seed', ['--class' => $seeder, '--force' => true]);
+            }
         } catch (Throwable $e) {
             report($e);
         }
