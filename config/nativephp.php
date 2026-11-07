@@ -67,6 +67,11 @@ return [
         'DO_SPACES_*',
         '*_SECRET',
         'BIFROST_*',
+        // Ajustes de desarrollo: la app empaquetada corre en producción, sin
+        // debug y con la base SQLite que NativePHP configura en tiempo de ejecución.
+        'APP_ENV',
+        'APP_DEBUG',
+        'DB_*',
         'NATIVEPHP_UPDATER_PATH',
         'NATIVEPHP_APPLE_ID',
         'NATIVEPHP_APPLE_ID_PASS',
